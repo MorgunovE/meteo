@@ -55,9 +55,9 @@ module.exports = {
   rules: {
     'no-param-reassign': 'off',
     'no-void': 'off',
+    'max-len': ["error", { "code": 200 }],
     'no-nested-ternary': 'off',
     'max-classes-per-file': 'off',
-
     'import/first': 'off',
     'import/named': 'error',
     'import/namespace': 'error',

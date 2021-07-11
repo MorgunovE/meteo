@@ -1,30 +1,6 @@
 <template>
   <q-page>
     <div class="q-pa-md">
-      <div class="row justify-between q-gutter-md">
-        <div class="col-xs-10 col-sm">
-          <q-input
-            color="orange"
-            standout
-            bottom-slots
-            v-model="options.params.location"
-            label="Город"
-          >
-            <template v-slot:prepend>
-              <q-icon name="place" />
-            </template>
-            <template v-slot:hint> Выберите город</template>
-          </q-input>
-        </div>
-        <div class="text-center col-xs-10 col-sm">
-          <q-btn
-            size="lg"
-            @click="getMeteo"
-            color="secondary"
-            label="Получить прогноз"
-          />
-        </div>
-      </div>
       <q-card
         v-for="item in meteo"
         :key="item"
@@ -34,47 +10,54 @@
         style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
       >
         <q-card-section>
-          <div class="text-h6 text-center">Погода на день</div>
+          <div class="text-h6 text-center">
+            Прогноз погоды на {{ new Date(item.values[id].datetimeStr).toLocaleDateString()}}
+          </div>
         </q-card-section>
 
-        <q-card-section class="no-padding">
-          <div>
-            <div class="row">
-              <div
-                :v-for="item in item.values.slice(1)"
-                :key="item"
-                class="col-12 col-sm-4 q-pa-md">
-                <q-card class="my-card text-center">
-                  <img v-if="item.preciptype == ''" src="~assets/img/sun.png">
-                  <img v-if="item.preciptype == 'rain'" src="~assets/img/rain.png">
-                  <q-list>
-                    <q-btn color="blue" class="full-width">
-                      Погода на
-                      {{ new Date(item.datetimeStr).toLocaleDateString()}}
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Температура: {{ item.temp }} °C
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Максимальная: {{ item.maxt }} °C
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Ощущаемая: {{ item.heatindex }} °C
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Влажность: {{ item.humidity }} %
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Скорость ветра: {{ item.wspd }} m/s
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Видимость: {{ item.visibility }} km
-                    </q-btn>
-                  </q-list>
-                </q-card>
-              </div>
-            </div>
-          </div>
+        <q-card-section class="q-pt-none ">
+          <q-card class="my-card " flat bordered>
+            <q-card-section class="q-pa-none row">
+              <q-img
+                v-if="item.values[id].preciptype == ''"
+                class="col-12 col-sm-4"
+                src="~assets/img/sun.png"
+              />
+              <q-img
+                v-if="item.values[id].preciptype == 'rain'"
+                class="col-12 col-sm-4"
+                src="~assets/img/rain.png"
+              />
+              <q-card-actions vertical class="justify-around col-12 col-sm-4">
+                <q-btn  color="blue">
+                  Температура: {{ item.values[id].temp }} °C
+                </q-btn>
+                <q-btn color="blue">
+                  Максимальная: {{ item.values[id].maxt }} °C
+                </q-btn>
+                <q-btn color="blue">
+                  Ощущаемая: {{ item.values[id].heatindex }} °C
+                </q-btn>
+                <q-btn color="blue">
+                  Влажность: {{ item.values[id].humidity }} %
+                </q-btn>
+              </q-card-actions>
+              <q-card-actions vertical class="justify-around col-12 col-sm-4">
+                <q-btn color="blue">
+                  Скорость ветра: {{ item.values[id].wspd }} m/s
+                </q-btn>
+                <q-btn color="blue">
+                  Видимость: {{ item.values[id].visibility }} km
+                </q-btn>
+                <q-btn color="blue">
+                  Давление: {{ item.values[id].sealevelpressure }} мбар
+                </q-btn>
+                <q-btn color="blue">
+                  Вероятность осадков: {{ item.values[id].pop }} %
+                </q-btn>
+              </q-card-actions>
+            </q-card-section>
+          </q-card>
         </q-card-section>
       </q-card>
     </div>
@@ -89,7 +72,7 @@ export default defineComponent({
   data() {
     return {
       meteo: '',
-      day: this.$route.params.id,
+      id: this.$route.params.id,
       options: {
         method: 'GET',
         url: 'https://visual-crossing-weather.p.rapidapi.com/forecast',
@@ -108,6 +91,9 @@ export default defineComponent({
         },
       },
     };
+  },
+  created() {
+    this.getMeteo();
   },
   methods: {
     getMeteo() {

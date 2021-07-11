@@ -4,12 +4,11 @@ const routes = [{
   children: [{
     path: '',
     component: () => import('pages/Index.vue'),
-    children: [{
-      path: '/item',
-      component: () => import('pages/Item.vue'),
-      name: 'погода на день',
-    },
-    ],
+  },
+  {
+    path: '/item/:id',
+    component: () => import('pages/Item.vue'),
+    name: 'Погода на день',
   },
   {
     path: '/graf',

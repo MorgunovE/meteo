@@ -38,89 +38,89 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none ">
-          <q-card class="my-card " flat bordered>
-            <q-card-section horizontal>
-              <q-img
-                style="height: 250px; max-width: 250px"
-                class="col"
-                src="~assets/img/sun.png"
-              />
-              <q-card-actions vertical class="justify-around col q-px-md">
-                <q-btn  @click='$router.push(`/item/0`)' color="blue">
-                  Погода сегодня: {{ new Date(item.currentConditions.datetime).toLocaleString()}}
-                </q-btn>
-                <q-btn color="blue">
-                  Температура: {{ item.currentConditions.temp }} °C
-                </q-btn>
-                <q-btn color="blue">
-                  Ощущаемая: {{ item.currentConditions.heatindex }} °C
-                </q-btn>
-                <q-btn color="blue">
-                  Влажность: {{ item.currentConditions.humidity }} %
-                </q-btn>
-              </q-card-actions>
-              <q-card-actions vertical class="justify-around col q-px-md">
-                <q-btn color="blue">
-                  Скорость ветра: {{ item.currentConditions.wspd }} m/s
-                </q-btn>
-                <q-btn color="blue">
-                  Видимость: {{ item.currentConditions.visibility }} km
-                </q-btn>
-                <q-btn color="blue">
-                  Рассвет: {{ new Date(item.currentConditions.sunrise).toLocaleTimeString()}}
-                </q-btn>
-                <q-btn color="blue">
-                  Закат: {{ new Date(item.currentConditions.sunset).toLocaleTimeString()}}
-                </q-btn>
-              </q-card-actions>
-            </q-card-section>
-          </q-card>
+          <a @click="$router.push(`/item/0`)">
+            <q-card class="my-card " flat bordered>
+              <q-card-section class="q-pa-none row">
+                  <q-img
+                    class="col-12 col-sm-4"
+                    src="~assets/img/sun.png"
+                  />
+                  <q-card-actions vertical class="justify-around col-12 col-sm-4">
+                    <q-btn  color="blue">
+                      Погода сейчас на:
+                      {{new Date(item.currentConditions.datetime).toLocaleString()}}
+                    </q-btn>
+                    <q-btn color="blue">
+                      Температура: {{ item.currentConditions.temp }} °C
+                    </q-btn>
+                    <q-btn color="blue">
+                      Ощущаемая: {{ item.currentConditions.heatindex }} °C
+                    </q-btn>
+                    <q-btn color="blue">
+                      Влажность: {{ item.currentConditions.humidity }} %
+                    </q-btn>
+                  </q-card-actions>
+                  <q-card-actions vertical class="justify-around col-12 col-sm-4">
+                    <q-btn color="blue">
+                      Скорость ветра: {{ item.currentConditions.wspd }} m/s
+                    </q-btn>
+                    <q-btn color="blue">
+                      Видимость: {{ item.currentConditions.visibility }} km
+                    </q-btn>
+                    <q-btn color="blue">
+                      Рассвет: {{ new Date(item.currentConditions.sunrise).toLocaleTimeString()}}
+                    </q-btn>
+                    <q-btn color="blue">
+                      Закат: {{ new Date(item.currentConditions.sunset).toLocaleTimeString()}}
+                    </q-btn>
+                  </q-card-actions>
+              </q-card-section>
+            </q-card>
+          </a>
         </q-card-section>
-
         <q-separator inset />
         <q-card-section class="q-pb-none">
           <div class="text-h6 text-center">Погода на неделю</div>
         </q-card-section>
-
         <q-card-section class="no-padding">
           <div>
             <div class="row">
               <div
-                v-for="item in item.values.slice(1, 7)"
+                v-for="(item, i) in item.values.slice(1, 7)"
                 :key="item"
                 class="col-12 col-sm-4 q-pa-md">
-                <q-card class="my-card text-center">
-                  <img v-if="item.preciptype == ''" src="~assets/img/sun.png">
-                  <img v-if="item.preciptype == 'rain'" src="~assets/img/rain.png">
-                  <q-list>
-                   <q-btn
-                      @click='$router.push(`/item/`)'
-                      class="full-width"
-                      color="blue"
-                      to="/item">
-                      Погода на
-                      {{ new Date(item.datetimeStr).toLocaleDateString()}}
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Температура: {{ item.temp }} °C
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Максимальная: {{ item.maxt }} °C
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Ощущаемая: {{ item.heatindex }} °C
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Влажность: {{ item.humidity }} %
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Скорость ветра: {{ item.wspd }} m/s
-                    </q-btn>
-                    <q-btn color="blue" class="full-width">
-                      Видимость: {{ item.visibility }} km
-                    </q-btn>
-                  </q-list>
-                </q-card>
+                <a @click='$router.push(`/item/${i+1}`)'>
+                  <q-card class="my-card text-center">
+                    <img v-if="item.preciptype == ''" src="~assets/img/sun.png">
+                    <img v-if="item.preciptype == 'rain'" src="~assets/img/rain.png">
+                    <q-list>
+                    <q-btn
+                        class="full-width"
+                        color="blue">
+                        Погода на
+                        {{ new Date(item.datetimeStr).toLocaleDateString()}}
+                      </q-btn>
+                      <q-btn color="blue" class="full-width">
+                        Температура: {{ item.temp }} °C
+                      </q-btn>
+                      <q-btn color="blue" class="full-width">
+                        Максимальная: {{ item.maxt }} °C
+                      </q-btn>
+                      <q-btn color="blue" class="full-width">
+                        Ощущаемая: {{ item.heatindex }} °C
+                      </q-btn>
+                      <q-btn color="blue" class="full-width">
+                        Влажность: {{ item.humidity }} %
+                      </q-btn>
+                      <q-btn color="blue" class="full-width">
+                        Скорость ветра: {{ item.wspd }} m/s
+                      </q-btn>
+                      <q-btn color="blue" class="full-width">
+                        Видимость: {{ item.visibility }} km
+                      </q-btn>
+                    </q-list>
+                  </q-card>
+                </a>
               </div>
             </div>
           </div>
